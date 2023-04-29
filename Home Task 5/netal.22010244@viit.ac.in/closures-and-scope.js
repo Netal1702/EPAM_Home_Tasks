@@ -6,12 +6,19 @@ understanding, here an example:
 -- callbacks[0](); // must return 0
 -- callbacks[3](); // must return 3
 */
-function closure_scope(n) {
-    var callbacks = [];
-    for (let i=0; i<n; i++) {
-      callbacks.push(function() {
-        return i;
-      });
-    }
-    return callbacks;
+function createFunctions(n) {
+  var callbacks = [];
+  
+  for (var i = 0; i < n; i++) {
+    callbacks.push((function(index) {
+      return function() {
+        return index;
+      };
+    })(i));
+  }
+  
+  return callbacks;
 }
+var callbacks = createFunctions(5);
+console.log(callbacks[0]()); // Output: 0
+console.log(callbacks[3]()); // Output: 3
